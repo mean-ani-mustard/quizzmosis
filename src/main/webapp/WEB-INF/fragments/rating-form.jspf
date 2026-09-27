@@ -1,0 +1,21 @@
+<%--
+    Five stars to rate ${quiz}; ${myRating} is the user's current rating (empty if none). When
+    ${ratingAttemptId} is set, saving goes back to that result page instead of the quiz page.
+    The stars are radio buttons in reverse order, so CSS can light up a star and the ones before it.
+--%>
+<form method="post" action="${ctx}/quiz/rate" class="m-0 d-flex align-items-center flex-wrap gap-2">
+    <input type="hidden" name="_csrf" value="${csrfToken}">
+    <input type="hidden" name="quizId" value="${quiz.quizId}">
+    <c:if test="${not empty ratingAttemptId}"><input type="hidden" name="attempt" value="${ratingAttemptId}"></c:if>
+    <fieldset class="star-input">
+        <legend class="visually-hidden">Your rating</legend>
+        <c:forEach var="stars" begin="1" end="5">
+            <c:set var="value" value="${6 - stars}"/>
+            <input type="radio" name="rating" id="rating-${quiz.quizId}-${value}" value="${value}"
+                   <c:if test="${myRating == value}">checked</c:if> required>
+            <label for="rating-${quiz.quizId}-${value}" title="${value} ${value == 1 ? 'star' : 'stars'}">
+                <i class="bi bi-star-fill"></i><span class="visually-hidden">${value} ${value == 1 ? 'star' : 'stars'}</span></label>
+        </c:forEach>
+    </fieldset>
+    <button type="submit" class="btn btn-sm btn-light text-primary fw-semibold">${empty myRating ? 'Rate' : 'Change rating'}</button>
+</form>

@@ -1,0 +1,42 @@
+<%--
+    A quiz as a card in a Bootstrap grid row. Used inside <c:forEach var="quiz" ...> loops; the
+    including page declares the c and fmt tag libraries.
+    Everything the quiz author typed goes through <c:out>, which escapes HTML, so a title like
+    "<script>...</script>" is shown as text instead of being run by the browser (XSS).
+--%>
+<div class="col-12 col-sm-6 col-lg-4">
+    <div class="glass-card p-4 h-100 d-flex flex-column">
+        <h3 class="h5 fw-semibold mb-1">
+            <i class="bi bi-lightbulb-fill text-warning me-1"></i>
+            <a href="${ctx}/quiz?id=${quiz.quizId}" class="link-light text-decoration-none"><c:out value="${quiz.title}"/></a>
+        </h3>
+        <p class="small text-soft mb-2 d-flex flex-wrap align-items-center gap-2">
+            <span>by <a href="${ctx}/profile?id=${quiz.ownerId}" class="link-light"><c:out value="${quiz.ownerUsername}"/></a></span>
+            <%@ include file="/WEB-INF/fragments/rating-badge.jspf" %>
+            <%@ include file="/WEB-INF/fragments/visibility-badge.jspf" %>
+        </p>
+        <p class="small flex-grow-1 mb-2"><c:out value="${quiz.description}"/></p>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <span class="small text-soft">
+                <i class="bi bi-question-circle"></i> ${quiz.questionCount} ${quiz.questionCount == 1 ? 'question' : 'questions'}
+                <span class="ms-2"><i class="bi bi-people"></i> ${quiz.attemptCount} ${quiz.attemptCount == 1 ? 'play' : 'plays'}</span>
+                <c:if test="${not empty quiz.timeLimitSeconds}">
+                    <span class="ms-2" title="Time limit"><i class="bi bi-stopwatch"></i> ${quiz.timeLimitMinutes} min</span>
+                </c:if>
+            </span>
+            <c:choose>
+                <c:when test="${quiz.playable}">
+                    <a href="${ctx}/quiz/start?id=${quiz.quizId}" class="btn btn-sm btn-light text-primary fw-semibold ms-auto">
+                        <i class="bi bi-play-fill"></i> Play</a>
+                </c:when>
+                <c:when test="${quiz.ownerId == sessionScope.user.userId}">
+                    <a href="${ctx}/quiz/questions?id=${quiz.quizId}" class="btn btn-sm btn-warning fw-semibold ms-auto">
+                        <i class="bi bi-plus-circle"></i> Add questions</a>
+                </c:when>
+                <c:otherwise>
+                    <span class="badge text-bg-secondary ms-auto">No questions yet</span>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+</div>

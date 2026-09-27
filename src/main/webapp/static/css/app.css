@@ -1,0 +1,353 @@
+/* Quizzmosis styles on top of Bootstrap 5: blue gradient background with "glass" cards. */
+
+/* The gradient sits on <html> so it always covers the whole page, however long it is. */
+html {
+    min-height: 100%;
+    background: linear-gradient(135deg, #0d6efd 0%, #024ec1 100%);
+}
+
+body {
+    background: transparent;
+    color: #fff;
+}
+
+.navbar .nav-link {
+    white-space: nowrap;
+}
+
+/*
+    backdrop-filter (see .glass-card) gives the navbar its own stacking context, so without a
+    z-index the page's glass cards would be painted over its dropdown menu.
+*/
+.navbar.glass-card {
+    z-index: 1030;
+}
+
+a.link-light:hover {
+    color: #ffe066 !important;
+}
+
+.text-soft {
+    color: rgba(255, 255, 255, 0.78) !important;
+}
+
+/* Frosted-glass panels used for almost every block on the site. */
+.glass-card {
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 1rem;
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.25);
+}
+
+/* A lighter box inside a glass card. */
+.glass-inner {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.75rem;
+}
+
+.scroll-box {
+    max-height: 230px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+/* Tables that sit on the blue background. */
+.table-glass {
+    --bs-table-bg: transparent;
+    --bs-table-color: #fff;
+    --bs-table-border-color: rgba(255, 255, 255, 0.2);
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.08);
+    --bs-table-hover-color: #fff;
+    --bs-table-active-bg: rgba(255, 224, 102, 0.22);
+    --bs-table-active-color: #fff;
+    margin-bottom: 0;
+}
+
+.table-glass th {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Login and registration pages. */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+}
+
+.brand-title {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+}
+
+/* Numbers on the quiz and admin pages. */
+.stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    text-align: center;
+    height: 100%;
+}
+
+.stat-number {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Gold, silver and bronze for the first three places. */
+.rank-badge {
+    display: inline-block;
+    min-width: 2.2rem;
+    text-align: center;
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.45rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.rank-1 { background: linear-gradient(45deg, #ffd700, #ffed4e); color: #000; }
+.rank-2 { background: linear-gradient(45deg, #c0c0c0, #e5e5e5); color: #000; }
+.rank-3 { background: linear-gradient(45deg, #cd7f32, #daa520); color: #fff; }
+
+.question-image {
+    max-height: 400px;
+    max-width: 100%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.quiz-panel {
+    max-width: 820px;
+}
+
+.pre-wrap {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* Achievements: earned ones glow, locked ones are grey. */
+.achievement-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.2s;
+}
+
+.achievement-card:hover {
+    transform: translateY(-4px);
+}
+
+.achievement-icon {
+    font-size: 2.6rem;
+    color: #ffd700;
+    filter: drop-shadow(0 0 10px rgba(255, 241, 118, 0.7));
+}
+
+.achievement-card.locked {
+    opacity: 0.45;
+}
+
+.achievement-card.locked .achievement-icon {
+    color: #fff;
+    filter: none;
+}
+
+.firework {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1080;
+    animation: firework-burst 1.2s ease-out forwards;
+}
+
+@keyframes firework-burst {
+    from { transform: translate(0, 0) scale(1); opacity: 1; }
+    to { transform: translate(var(--dx), var(--dy)) scale(0.4); opacity: 0; }
+}
+
+/* Unread messages. */
+.unread {
+    border-left: 4px solid #ffc107;
+}
+
+/* Nav pills on the messages page. */
+.nav-pills .nav-link {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    margin: 0 0.25rem;
+}
+
+.nav-pills .nav-link.active {
+    background: #fff;
+    color: #0d6efd;
+}
+
+/* A taller scroll box, e.g. for the challenge history on a profile. */
+.scroll-box-tall {
+    max-height: 460px;
+}
+
+/* A user's mantra on their profile. */
+.mantra {
+    font-style: italic;
+    color: #ffe066;
+    overflow-wrap: anywhere;
+}
+
+.mantra-form {
+    max-width: 32rem;
+}
+
+/* The profile preview window: the same blue as the page, so white text stays readable. */
+.glass-modal {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.97) 0%, rgba(2, 78, 193, 0.97) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 1rem;
+    color: #fff;
+}
+
+/* Conversations on the messages page: your own notes on the right. */
+.note-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.note {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.85rem;
+    max-width: 85%;
+    align-self: flex-start;
+}
+
+.note-mine {
+    background: rgba(255, 255, 255, 0.24);
+    align-self: flex-end;
+}
+
+/* The optional comment next to the Accept and Decline buttons of a challenge. */
+.challenge-comment {
+    flex: 1 1 14rem;
+    width: auto;
+}
+
+/* The question (and form) that is being edited on the quiz editor page. */
+.editing-card {
+    outline: 2px solid #ffc107;
+    outline-offset: 2px;
+}
+
+.time-limit-input {
+    max-width: 14rem;
+}
+
+/*
+    Star rating input (fragments/rating-form.jspf). The radio buttons come in reverse order
+    (5 to 1) and are shown right to left, so "the checked star and every star after it in the
+    page" are the ones on its left: exactly the stars that should light up.
+*/
+.star-input {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.star-input input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.star-input label {
+    font-size: 1.4rem;
+    padding: 0 0.1rem;
+    color: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+}
+
+.star-input input:checked ~ label {
+    color: #ffc107;
+}
+
+/* While the mouse is over the stars, they show the rating it points at instead of the saved one. */
+.star-input:hover input:checked ~ label {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.star-input:hover label:hover,
+.star-input:hover label:hover ~ label {
+    color: #ffc107;
+}
+
+.star-input input:focus-visible + label {
+    outline: 2px solid #fff;
+    border-radius: 0.25rem;
+}
+
+/* Round avatars with a person's initials (WEB-INF/tags/avatar.tag); the colour comes from their id. */
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    color: #fff;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: middle;
+    user-select: none;
+}
+
+/* A link with an avatar and a name: the gap replaces the space, so only the name is underlined. */
+.person-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.avatar-sm { width: 1.75rem; height: 1.75rem; font-size: 0.7rem; }
+.avatar-md { width: 2.5rem; height: 2.5rem; font-size: 0.95rem; }
+.avatar-lg { width: 4rem; height: 4rem; font-size: 1.4rem; }
+.avatar-xl { width: 5rem; height: 5rem; font-size: 1.8rem; border-width: 3px; }
+
+/* Eight colours that stand out on the blue background and keep white text readable. */
+.avatar-color-0 { background: #c92a2a; }
+.avatar-color-1 { background: #d6336c; }
+.avatar-color-2 { background: #9c36b5; }
+.avatar-color-3 { background: #6741d9; }
+.avatar-color-4 { background: #0b7285; }
+.avatar-color-5 { background: #087f5b; }
+.avatar-color-6 { background: #2b8a3e; }
+.avatar-color-7 { background: #e67700; }
+
+.settings-panel {
+    max-width: 640px;
+}

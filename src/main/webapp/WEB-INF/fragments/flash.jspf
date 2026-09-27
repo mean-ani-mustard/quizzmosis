@@ -1,0 +1,16 @@
+<%--
+    One-time "flash" message from the previous request (see Flash.java), plus the ${error}
+    message that servlets set when they show a form again with a validation error.
+--%>
+<c:if test="${not empty sessionScope.flash}">
+    <div class="alert alert-${sessionScope.flash.type} alert-dismissible fade show" role="alert">
+        <c:out value="${sessionScope.flash.message}"/>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <c:remove var="flash" scope="session"/>
+</c:if>
+<c:if test="${not empty error}">
+    <div class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i> <c:out value="${error}"/>
+    </div>
+</c:if>

@@ -1,0 +1,30 @@
+<%--
+    Previous / Next buttons under a list that is shown one page at a time. The including page sets
+    ${page} (a util.Page) and ${pageLink}: the page's own address with its other parameters, made
+    with <c:url>; "page=N" is added to it. ${pageAnchor} (optional, e.g. "#people") scrolls back to
+    the list after the click.
+--%>
+<c:if test="${page.totalPages > 1}">
+    <c:set var="pageJoiner" value="${fn:contains(pageLink, '?') ? '&amp;' : '?'}"/>
+    <nav class="d-flex justify-content-center align-items-center gap-3 mt-4" aria-label="Pages">
+        <c:choose>
+            <c:when test="${page.first}">
+                <span class="btn btn-outline-light disabled" aria-disabled="true"><i class="bi bi-chevron-left"></i> Previous</span>
+            </c:when>
+            <c:otherwise>
+                <a class="btn btn-outline-light" rel="prev"
+                   href="${pageLink}${pageJoiner}page=${page.number - 1}${pageAnchor}"><i class="bi bi-chevron-left"></i> Previous</a>
+            </c:otherwise>
+        </c:choose>
+        <span class="small text-soft">Page ${page.number} of ${page.totalPages}</span>
+        <c:choose>
+            <c:when test="${page.last}">
+                <span class="btn btn-outline-light disabled" aria-disabled="true">Next <i class="bi bi-chevron-right"></i></span>
+            </c:when>
+            <c:otherwise>
+                <a class="btn btn-outline-light" rel="next"
+                   href="${pageLink}${pageJoiner}page=${page.number + 1}${pageAnchor}">Next <i class="bi bi-chevron-right"></i></a>
+            </c:otherwise>
+        </c:choose>
+    </nav>
+</c:if>

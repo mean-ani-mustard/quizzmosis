@@ -1,0 +1,7 @@
+<%-- The average star rating of ${quiz}, e.g. "4.3 (12)", or nothing while nobody has rated it. --%>
+<c:if test="${quiz.ratingCount > 0}">
+    <span class="text-nowrap" title="Average of ${quiz.ratingCount} ${quiz.ratingCount == 1 ? 'rating' : 'ratings'}">
+        <i class="bi bi-star-fill text-warning"></i>
+        <fmt:formatNumber value="${quiz.averageRating}" minFractionDigits="1" maxFractionDigits="1"/>
+        <span class="text-soft">(${quiz.ratingCount})</span></span>
+</c:if>

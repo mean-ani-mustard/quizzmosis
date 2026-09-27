@@ -1,0 +1,22 @@
+<%--
+    One person in a list on the friends page. ${person} is a UserWithStatus. The name and the
+    "Preview" button open the profile preview window (and are plain links without JavaScript).
+--%>
+<div class="glass-inner p-2 px-3 mb-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+        <a href="${ctx}/profile?id=${person.user.userId}" class="link-light fw-semibold person-link"
+           data-preview-url="${ctx}/profile/preview?id=${person.user.userId}"><q:avatar name="${person.user.displayName}" userId="${person.user.userId}" size="md"/>
+            <c:out value="${person.user.displayName}"/></a>
+        <span class="small text-soft">@<c:out value="${person.user.username}"/></span>
+        <c:if test="${person.mutualFriends > 0}">
+            <div class="small text-soft"><i class="bi bi-people"></i> ${person.mutualFriends} mutual ${person.mutualFriends == 1 ? 'friend' : 'friends'}</div>
+        </c:if>
+    </div>
+    <div class="d-flex flex-wrap align-items-center gap-2">
+        <a href="${ctx}/profile?id=${person.user.userId}" class="btn btn-sm btn-outline-light"
+           data-preview-url="${ctx}/profile/preview?id=${person.user.userId}"><i class="bi bi-eye"></i> Preview</a>
+        <c:set var="buttonUser" value="${person.user}"/>
+        <c:set var="buttonStatus" value="${person.status}"/>
+        <%@ include file="/WEB-INF/fragments/friend-button.jspf" %>
+    </div>
+</div>

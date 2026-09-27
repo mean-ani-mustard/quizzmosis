@@ -1,0 +1,15 @@
+<%--
+    The profile preview window. app.js opens it when a link with data-preview-url is clicked and
+    loads the preview (ProfilePreviewServlet) into it. Include it once, outside the page's cards.
+--%>
+<div class="modal fade" id="profilePreview" tabindex="-1" aria-labelledby="profilePreviewTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content glass-modal">
+            <div class="modal-header border-0 pb-0">
+                <h2 class="modal-title h6 text-soft" id="profilePreviewTitle"><i class="bi bi-eye"></i> Profile preview</h2>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" data-preview-body></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<%--
+    The friendship button for ${buttonUser} (a User), which depends on ${buttonStatus} (a
+    FriendshipStatus): "Add friend", "Accept request", or a badge. The forms post to FriendsServlet,
+    which goes back to the friends page afterwards.
+--%>
+<c:choose>
+    <c:when test="${buttonStatus == 'FRIENDS'}">
+        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Friends</span>
+    </c:when>
+    <c:when test="${buttonStatus == 'REQUEST_SENT'}">
+        <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> Request sent</span>
+    </c:when>
+    <c:when test="${buttonStatus == 'REQUEST_RECEIVED'}">
+        <form method="post" action="${ctx}/friends" class="m-0">
+            <input type="hidden" name="_csrf" value="${csrfToken}">
+            <input type="hidden" name="userId" value="${buttonUser.userId}">
+            <button type="submit" name="action" value="accept" class="btn btn-sm btn-success"><i class="bi bi-check"></i> Accept request</button>
+        </form>
+    </c:when>
+    <c:when test="${buttonStatus == 'NONE'}">
+        <form method="post" action="${ctx}/friends" class="m-0">
+            <input type="hidden" name="_csrf" value="${csrfToken}">
+            <input type="hidden" name="userId" value="${buttonUser.userId}">
+            <button type="submit" name="action" value="send" class="btn btn-sm btn-success"><i class="bi bi-person-plus"></i> Add friend</button>
+        </form>
+    </c:when>
+</c:choose>

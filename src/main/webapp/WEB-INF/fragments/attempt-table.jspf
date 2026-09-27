@@ -1,0 +1,41 @@
+<%--
+    A table of attempts (AttemptSummary objects). Set before including:
+      ${rows}      the attempts to show
+      ${ranked}    true to show a rank column (1st, 2nd, ...)
+      ${showQuiz}  true to show which quiz each attempt was for
+    The current user's own rows are highlighted.
+--%>
+<div class="table-responsive">
+    <table class="table table-glass table-sm align-middle">
+        <thead>
+        <tr>
+            <c:if test="${ranked}"><th scope="col">#</th></c:if>
+            <th scope="col">Player</th>
+            <c:if test="${showQuiz}"><th scope="col">Quiz</th></c:if>
+            <th scope="col">Score</th>
+            <th scope="col">Time</th>
+            <th scope="col">When</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="row" items="${rows}" varStatus="position">
+            <tr class="${row.userId == sessionScope.user.userId ? 'table-active' : ''}">
+                <c:if test="${ranked}">
+                    <td><span class="rank-badge rank-${position.index + 1}">${position.index + 1}</span></td>
+                </c:if>
+                <td>
+                    <a href="${ctx}/profile?id=${row.userId}" class="link-light text-decoration-none text-nowrap">
+                        <q:avatar name="${row.displayName}" userId="${row.userId}"/> <c:out value="${row.displayName}"/>
+                    </a>
+                </td>
+                <c:if test="${showQuiz}">
+                    <td><a href="${ctx}/quiz?id=${row.quizId}" class="link-light"><c:out value="${row.quizTitle}"/></a></td>
+                </c:if>
+                <td><strong>${row.score}/${row.totalQuestions}</strong> <span class="small text-soft">(${row.percentage}%)</span></td>
+                <td>${row.formattedDuration}</td>
+                <td class="small text-nowrap"><fmt:formatDate value="${row.attemptDate}" pattern="MMM d, HH:mm"/></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>

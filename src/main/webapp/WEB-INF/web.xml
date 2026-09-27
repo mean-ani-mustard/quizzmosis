@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>Quizzmosis</display-name>
+
+    <!-- Read form data and write pages as UTF-8, so text in any language survives. -->
+    <request-character-encoding>UTF-8</request-character-encoding>
+    <response-character-encoding>UTF-8</response-character-encoding>
+
+    <!--
+        Locale used by <fmt:formatDate> and <fmt:formatNumber>. Without it JSTL depends on the
+        browser's Accept-Language header and prints raw values like "2025-07-12 14:03:22.0" when
+        there is none. The site is in English, so dates and numbers are too.
+    -->
+    <context-param>
+        <param-name>jakarta.servlet.jsp.jstl.fmt.locale</param-name>
+        <param-value>en-US</param-value>
+    </context-param>
+
+    <!--
+        Servlets and the listener are registered with annotations (@WebServlet, @WebListener).
+        Filters are declared here instead, because only web.xml can fix the order they run in:
+        AuthFilter (logged in?) -> CsrfFilter (valid form?) -> AdminFilter (admin?).
+    -->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.quizzmosis.web.filter.AuthFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>CsrfFilter</filter-name>
+        <filter-class>com.quizzmosis.web.filter.CsrfFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>com.quizzmosis.web.filter.AdminFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CsrfFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <session-config>
+        <session-timeout>60</session-timeout>
+        <cookie-config>
+            <!-- JavaScript can't read the session cookie, and other sites can't send it with their forms. -->
+            <http-only>true</http-only>
+            <attribute>
+                <attribute-name>SameSite</attribute-name>
+                <attribute-value>Lax</attribute-value>
+            </attribute>
+        </cookie-config>
+        <!-- Never put the session id into URLs (;jsessionid=...), where it could leak. -->
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!--
+        All JSPs are UTF-8. (trim-directive-whitespaces is deliberately not used: it also deletes
+        the space in "${a} ${b}" or after a JSTL tag, which glues words together on the page.)
+    -->
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <url-pattern>*.jspf</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
+
+    <!-- Friendly error pages instead of the server's default ones (which can leak stack traces). -->
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/views/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/WEB-INF/views/error.jsp</location>
+    </error-page>
+</web-app>

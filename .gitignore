@@ -1,0 +1,21 @@
+# Maven build output
+target/
+
+# IDE settings
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Local settings and secrets (see .env.example)
+.env
+*.log
+
+# Local backups that are not part of the project
+Claude outputs/

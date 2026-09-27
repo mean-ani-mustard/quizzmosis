@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- EL functions of this site, used in JSPs as ${qf:initials(name)}. -->
+<taglib xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_0.xsd"
+        version="3.0">
+    <tlib-version>1.0</tlib-version>
+    <short-name>qf</short-name>
+    <uri>/quizzmosis-functions</uri>
+    <function>
+        <description>The initials for an avatar: "Alice Johnson" becomes "AJ".</description>
+        <name>initials</name>
+        <function-class>com.quizzmosis.util.Format</function-class>
+        <function-signature>java.lang.String initials(java.lang.String)</function-signature>
+    </function>
+</taglib>

@@ -1,0 +1,36 @@
+# Reloads the demo data into the live demo's database every night, so the demo looks the way the
+# README describes, whatever visitors changed or deleted during the day. The demo data's dates are
+# relative to the moment it is loaded, so "today" on the leaderboard never runs empty either.
+#
+# The job runs only once the repository has the DEMO_DB_* settings from docs/DEPLOY.md (step 5);
+# until then it is skipped.
+name: Reset demo
+
+on:
+  schedule:
+    - cron: "17 3 * * *"   # every night at 03:17 UTC
+  workflow_dispatch:        # adds a "Run workflow" button on the Actions tab
+
+jobs:
+  reset:
+    name: Reload the demo data
+    if: vars.DEMO_DB_HOST != ''
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      # GitHub's Ubuntu machines come with the mysql command-line client.
+      - name: Load db/schema.sql and db/seed.sql
+        env:
+          DB_HOST: ${{ vars.DEMO_DB_HOST }}
+          DB_PORT: ${{ vars.DEMO_DB_PORT }}
+          DB_USER: ${{ vars.DEMO_DB_USER }}
+          DB_NAME: ${{ vars.DEMO_DB_NAME }}
+          DB_PASSWORD: ${{ secrets.DEMO_DB_PASSWORD }}
+        run: |
+          connection=(--host="$DB_HOST" --port="$DB_PORT" --user="$DB_USER" --password="$DB_PASSWORD"
+                      --ssl-mode=REQUIRED "$DB_NAME")
+          mysql "${connection[@]}" < db/schema.sql
+          mysql "${connection[@]}" < db/seed.sql
+          mysql --execute="SELECT COUNT(*) AS demo_users FROM users" "${connection[@]}"

@@ -1,0 +1,8 @@
+<%-- The status of ${challenge} (a Challenge) as a coloured badge, e.g. "Waiting" or "Completed". --%>
+<c:choose>
+    <c:when test="${challenge.status == 'PENDING'}"><c:set var="statusStyle" value="bg-secondary"/><c:set var="statusIcon" value="bi-hourglass-split"/></c:when>
+    <c:when test="${challenge.status == 'ACCEPTED'}"><c:set var="statusStyle" value="bg-info text-dark"/><c:set var="statusIcon" value="bi-play-circle"/></c:when>
+    <c:when test="${challenge.status == 'DECLINED'}"><c:set var="statusStyle" value="bg-danger"/><c:set var="statusIcon" value="bi-x-circle"/></c:when>
+    <c:otherwise><c:set var="statusStyle" value="bg-success"/><c:set var="statusIcon" value="bi-check-circle"/></c:otherwise>
+</c:choose>
+<span class="badge ${statusStyle}"><i class="bi ${statusIcon}"></i> ${challenge.status.label}</span>

@@ -1,0 +1,15 @@
+<%--
+    Shared <head> content, included by every page with:  <%@ include file="/WEB-INF/fragments/head.jspf" %>
+    The including page sets ${pageTitle} first and declares the "c" taglib. The "q" tags declared
+    here are this site's own (WEB-INF/tags), e.g. <q:avatar>, which the navigation bar uses.
+--%>
+<%@ taglib prefix="q" tagdir="/WEB-INF/tags" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><c:out value="${pageTitle}"/> &middot; Quizzmosis</title>
+<link rel="icon" type="image/svg+xml" href="${ctx}/static/img/favicon.svg">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="${ctx}/static/css/app.css">

@@ -1,0 +1,54 @@
+# Runs Quizzmosis together with a MySQL database:
+#
+#   docker compose up --build
+#
+# Then open http://localhost:8080 and log in as alice / password123.
+# On the first start the database is created from db/schema.sql and filled with the demo data
+# from db/seed.sql. "docker compose down -v" deletes it again, so the next start is fresh.
+#
+# The passwords below are defaults for trying the project on your own computer. To change them,
+# copy .env.example to .env and edit it (and never commit the .env file).
+
+name: quizzmosis
+
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: quiz_db
+      # The app logs in as this user, which can only access quiz_db.
+      MYSQL_USER: quizzmosis
+      MYSQL_PASSWORD: ${DB_PASSWORD:-quizzmosis}
+    volumes:
+      - db-data:/var/lib/mysql
+      # Scripts in this folder run once, when the database is created (in name order).
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql:ro
+      - ./db/seed.sql:/docker-entrypoint-initdb.d/2-seed.sql:ro
+    ports:
+      # Lets you connect with a MySQL client, or run the integration tests (see README).
+      - "${DB_PORT:-3306}:3306"
+    healthcheck:
+      # Uses TCP on purpose: during the first-time setup MySQL only listens on a local socket,
+      # so the database counts as healthy only once it is really ready for the app.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  app:
+    build: .
+    environment:
+      # allowPublicKeyRetrieval lets the driver use MySQL 8's default login method; fine on
+      # Docker's private network between the two containers.
+      DB_URL: jdbc:mysql://db:3306/quiz_db?allowPublicKeyRetrieval=true
+      DB_USER: quizzmosis
+      DB_PASSWORD: ${DB_PASSWORD:-quizzmosis}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:

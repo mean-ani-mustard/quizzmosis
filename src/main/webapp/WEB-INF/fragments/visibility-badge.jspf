@@ -1,0 +1,8 @@
+<%--
+    A small "Friends only" / "Only me" badge for a quiz that isn't public (public quizzes get none).
+    Expects ${quiz} to be set, e.g. by the <c:forEach var="quiz" ...> loop it is included in.
+--%>
+<c:if test="${quiz.visibility != 'PUBLIC'}">
+    <span class="badge rounded-pill text-bg-dark" title="${quiz.visibility.description}">
+        <i class="bi ${quiz.visibility.icon}"></i> ${quiz.visibility.label}</span>
+</c:if>

@@ -1,0 +1,25 @@
+# Render Blueprint: tells Render (render.com) how to run Quizzmosis online on its free plan.
+# Step-by-step instructions are in docs/DEPLOY.md.
+#
+# Render builds the image from the Dockerfile and runs it. The database lives elsewhere (the guide
+# uses Aiven's free MySQL), so Render asks for the three DB_ settings when the Blueprint is
+# created. Their values are stored by Render, never in this file.
+services:
+  - type: web
+    name: quizzmosis
+    runtime: docker
+    plan: free
+    # Choose the region closest to your database (oregon, ohio, virginia, frankfurt or singapore):
+    # every page runs several queries, so a database on another continent slows every page down.
+    region: frankfurt
+    envVars:
+      # Tomcat listens on port 8080 (see the Dockerfile); this tells Render to send visitors there.
+      - key: PORT
+        value: "8080"
+      # For example jdbc:mysql://HOST:PORT/defaultdb?sslMode=REQUIRED
+      - key: DB_URL
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false

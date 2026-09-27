@@ -1,0 +1,32 @@
+<%--
+    One question while taking a quiz: the text, the picture (for picture-response questions) and
+    the answer input. Expects ${question} and ${fieldName} (the name of the form field) to be set.
+--%>
+<p class="fs-5 fw-semibold mb-3"><c:out value="${question.questionText}"/></p>
+<c:if test="${question.pictureResponse and not empty question.imageUrl}">
+    <div class="text-center mb-3">
+        <img src="${fn:escapeXml(question.imageUrl)}" alt="Picture for this question"
+             class="img-fluid rounded question-image" referrerpolicy="no-referrer"
+             onerror="this.hidden = true; this.nextElementSibling.hidden = false;">
+        <div class="alert alert-warning mt-2" hidden>
+            <i class="bi bi-image"></i> The picture for this question could not be loaded.
+        </div>
+    </div>
+</c:if>
+<c:choose>
+    <c:when test="${question.multipleChoice}">
+        <c:forEach var="choice" items="${question.choices}">
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="${fieldName}"
+                       id="${fieldName}_${choice.choiceId}" value="${choice.choiceId}" required>
+                <label class="form-check-label" for="${fieldName}_${choice.choiceId}">
+                    <c:out value="${choice.choiceText}"/>
+                </label>
+            </div>
+        </c:forEach>
+    </c:when>
+    <c:otherwise>
+        <input type="text" class="form-control form-control-lg" name="${fieldName}" maxlength="255"
+               placeholder="Type your answer" autocomplete="off" required>
+    </c:otherwise>
+</c:choose>
