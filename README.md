@@ -245,3 +245,7 @@ A few design decisions:
 Quizzmosis was created by team **OverflowQuartet** as the final project of a university
 object-oriented programming course. This version was later reworked: security fixes, a clearer
 structure, tests, Docker and CI.
+
+## License
+
+Released under the [MIT License](LICENSE).
