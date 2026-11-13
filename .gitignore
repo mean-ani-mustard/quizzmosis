@@ -16,6 +16,3 @@ Thumbs.db
 # Local settings and secrets (see .env.example)
 .env
 *.log
-
-# Local backups that are not part of the project
-Claude outputs/

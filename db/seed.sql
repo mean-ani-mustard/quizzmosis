@@ -9,6 +9,11 @@
 --  always have something to show.
 -- =====================================================================
 
+-- This file is UTF-8. Without this line the mysql client guesses the encoding from the
+-- computer's language settings (inside Docker it guesses Latin-1), and accented letters
+-- such as the "í" in "Brasília" would be stored garbled.
+SET NAMES utf8mb4;
+
 INSERT INTO users (user_id, username, password_hash, display_name, mantra, show_challenge_history, is_admin, created_at, last_login) VALUES
     (1, 'alice', 'pbkdf2_sha256$600000$MyV/1UqIREbzNN4f2vDCHg==$ovftHuXjs0WYtPDcloXwIIu2QfSGSXuwP5ME4vU/Gl0=', 'Alice Johnson', 'Curiosity first, answers second.', TRUE, TRUE,  NOW() - INTERVAL 60 DAY, NOW() - INTERVAL 1 DAY),
     (2, 'bob',   'pbkdf2_sha256$600000$iNmK3m6Nv+djwc83mXi/Lg==$+qpgG7qGaZX5ejCwFdTZCmJtHY7omM6Oj0/3hcQEdko=', 'Bob Smith',     'Coffee, code, quizzes.',          TRUE, FALSE, NOW() - INTERVAL 55 DAY, NOW() - INTERVAL 3 HOUR),
@@ -119,7 +124,10 @@ INSERT INTO attempt_answers (attempt_id, question_id, user_answer_text, correct_
     (10, 15, 'Mars', 'Mars', TRUE),
     (10, 16, 'Jupiter', 'Jupiter', TRUE),
     (10, 17, '8', '8 / eight', TRUE),
-    (10, 18, 'Mercury', 'Mercury', TRUE);
+    (10, 18, 'Mercury', 'Mercury', TRUE),
+    (12, 21, 'gracias', 'gracias', TRUE),
+    (12, 22, 'gata', 'gato', FALSE),
+    (12, 23, 'casa', 'casa', TRUE);
 
 -- ---------------------------------------------------------------------
 -- Friends: alice-bob, alice-carol, bob-dave, frank-bob, frank-carol and grace-carol are friends,
